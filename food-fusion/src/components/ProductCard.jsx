@@ -1,21 +1,28 @@
 import { useDispatch } from "react-redux";
-import { addToCart } from "../features/cart/cartSlice";
 import { Link } from "react-router-dom";
+import { addToCart } from "../features/cart/cartSlice";
 
-function ProductCard({ meal }) {
+function ProductCard({ meal, isFeatured }) {
   const dispatch = useDispatch();
 
   return (
-    <div className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden h-full flex flex-col">
+    <div
+      className={`bg-white rounded-2xl shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden ${
+        isFeatured ? "border-4 border-orange-400" : ""
+      }`}
+    >
       <img
         src={meal.strMealThumb}
         alt={meal.strMeal}
         className="w-full h-56 object-cover"
       />
-
-      <div className="p-4 flex flex-col flex-grow justify-between">
-        <h3 className="truncate text-lg font-semibold">{meal.strMeal}</h3>
-
+      <div className="p-4 flex flex-col flex-grow">
+        <h3
+          className="text-xl font-semibold text-gray-800 mb-2 truncate"
+          title={meal.strMeal}
+        >
+          {meal.strMeal}
+        </h3>
         <div className="flex justify-between items-center mt-auto">
           <button
             onClick={() =>
@@ -24,6 +31,7 @@ function ProductCard({ meal }) {
                   id: meal.idMeal,
                   name: meal.strMeal,
                   image: meal.strMealThumb,
+                  price: 10 + Math.floor(Math.random() * 15),
                 })
               )
             }
@@ -31,7 +39,6 @@ function ProductCard({ meal }) {
           >
             Add to Cart
           </button>
-
           <Link
             to={`/product/${meal.idMeal}`}
             className="text-blue-500 text-sm hover:underline"
